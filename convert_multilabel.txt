@@ -1,0 +1,2 @@
+详细命令如下：（detail command）
+convert_multilabel image_root_path file_list_path image_db_path label_db_path label_counts -backend=DB_TYPE
