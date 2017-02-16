@@ -1,0 +1,2767 @@
+name: "MCNN_Attri"
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  transform_param {
+     mean_file: "root/mean.binaryproto"
+     crop_size: 227     
+  }  
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "root/TrainDbImage"
+    batch_size: 128
+    backend: LEVELDB
+   }
+}
+
+layer {
+  name: "labels"
+  type: "Data"
+  top: "labels"
+  include {
+     phase: TRAIN
+  }
+  data_param {
+    source: "root/TrainDbLabel"
+    batch_size: 128
+	backend: LEVELDB
+  }
+}
+
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  transform_param {
+    mean_file: "D:/djk_data/mean.binaryproto"
+    crop_size: 227   
+  }
+  include {
+    phase: TEST
+  }
+  data_param {
+    source: "D:/djk_data/TestDbImage"
+    batch_size: 100
+    backend: LEVELDB
+  }
+}
+
+layer {
+  name: "labels"
+  type: "Data"
+  top: "labels"
+  include {
+    phase: TEST
+  }
+  data_param {
+    source: "D:/djk_data/TestDbLabel"
+    batch_size: 100
+    backend: LEVELDB
+  }
+}
+
+layer {
+  name: "sliceL"
+  type: "Slice"
+  bottom: "labels"
+  top: "label_attr1"
+  top: "label_attr2"
+  top: "label_attr3"
+  top: "label_attr4"
+  top: "label_attr5"
+  top: "label_attr6"
+  top: "label_attr7"
+  top: "label_attr8"
+  top: "label_attr9"
+  top: "label_attr10"
+  top: "label_attr11"
+  top: "label_attr12"
+  top: "label_attr13"
+  top: "label_attr14"
+  top: "label_attr15"
+  top: "label_attr16"
+  top: "label_attr17"
+  top: "label_attr18"
+  top: "label_attr19"
+  top: "label_attr20"
+  top: "label_attr21"
+  top: "label_attr22"
+  top: "label_attr23"
+  top: "label_attr24"
+  top: "label_attr25"
+  top: "label_attr26"
+  top: "label_attr27"
+  top: "label_attr28"
+  top: "label_attr29"
+  top: "label_attr30" 
+  top: "label_attr31"
+  top: "label_attr32"
+  top: "label_attr33"
+  top: "label_attr34"
+  top: "label_attr35"
+  top: "label_attr36"
+  top: "label_attr37"
+  top: "label_attr38"
+  top: "label_attr39"
+  top: "label_attr40"
+  slice_param {
+    slice_dim: 1  
+	slice_point: 1
+	slice_point: 2
+	slice_point: 3
+	slice_point: 4
+	slice_point: 5
+	slice_point: 6
+	slice_point: 7
+	slice_point: 8
+	slice_point: 9
+    slice_point: 10
+	slice_point: 11
+	slice_point: 12
+	slice_point: 13
+	slice_point: 14
+	slice_point: 15
+	slice_point: 16
+	slice_point: 17
+	slice_point: 18
+	slice_point: 19
+	slice_point: 20
+	slice_point: 21
+	slice_point: 22
+	slice_point: 23
+	slice_point: 24
+	slice_point: 25
+	slice_point: 26
+	slice_point: 27
+	slice_point: 28
+	slice_point: 29
+    slice_point: 30
+	slice_point: 31
+	slice_point: 32
+	slice_point: 33
+	slice_point: 34
+	slice_point: 35
+	slice_point: 36
+	slice_point: 37
+	slice_point: 38
+	slice_point: 39
+  }
+}
+
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 75
+    kernel_size: 7
+    stride: 2	
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+layer
+{
+	name:"bn1"
+	type:"BatchNorm"
+	bottom:"pool1"
+	top:"bn1"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "bn1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 200
+    kernel_size: 5
+    stride: 1	
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3  
+    stride: 2	
+  }
+}
+layer
+{
+	name:"bn2"
+	type:"BatchNorm"
+	bottom:"pool2"
+	top:"bn2"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+
+#for group1
+layer {
+  name: "conv3_g1_gender"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g1_gender"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g1_gender"
+  type: "ReLU"
+  bottom: "conv3_g1_gender"
+  top: "conv3_g1_gender"
+}
+layer {
+  name: "pool3_g1_gender"
+  type: "Pooling"
+  bottom: "conv3_g1_gender"
+  top: "pool3_g1_gender"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5    
+	stride: 3
+  }
+}
+layer
+{
+	name:"bn3_g1_gender"
+	type:"BatchNorm"
+	bottom:"pool3_g1_gender"
+	top:"bn3_g1_gender"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g1_gender"
+  type: "InnerProduct"
+  bottom: "bn3_g1_gender"
+  top: "FC1_g1_gender" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g1_gender"
+  type: "ReLU"
+  bottom: "FC1_g1_gender"
+  top: "relu4_g1_gender"
+}
+layer
+{
+	name:"drop1_g1"
+	type:"Dropout"
+	bottom:"relu4_g1_gender"
+	top:"relu4_g1_gender"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g1_gender"
+  type: "InnerProduct"
+  bottom: "relu4_g1_gender"
+  top: "FC2_g1_gender" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g1_gender"
+  type: "ReLU"
+  bottom: "FC2_g1_gender"
+  top: "relu5_g1_gender"
+}
+layer
+{
+	name:"drop2_g1"
+	type:"Dropout"
+	bottom:"relu5_g1_gender"
+	top:"relu5_g1_gender"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC3_g1_gender"
+  type: "InnerProduct"
+  bottom: "relu5_g1_gender"
+  top: "FC3_g1_gender" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Male"
+  type: "Accuracy"
+  bottom: "FC3_g1_gender"
+  bottom: "label_attr21"
+  top: "accuracy_Male"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Male"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g1_gender"
+  bottom: "label_attr21"
+  top: "loss_Male"
+  loss_weight:0.025
+}
+
+
+#for group2
+layer {
+  name: "conv3_g2_Nose"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g2_Nose"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g2_Nose"
+  type: "ReLU"
+  bottom: "conv3_g2_Nose"
+  top: "conv3_g2_Nose"
+}
+layer {
+  name: "pool3_g2_Nose"
+  type: "Pooling"
+  bottom: "conv3_g2_Nose"
+  top: "pool3_g2_Nose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5  
+    stride: 3	
+  }
+}
+layer
+{
+	name:"bn3_g2_Nose"
+	type:"BatchNorm"
+	bottom:"pool3_g2_Nose"
+	top:"bn3_g2_Nose"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g2_Nose"
+  type: "InnerProduct"
+  bottom: "bn3_g2_Nose"
+  top: "FC1_g2_Nose" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g2_Nose"
+  type: "ReLU"
+  bottom: "FC1_g2_Nose"
+  top: "relu4_g2_Nose"
+}
+layer
+{
+	name:"drop1_g2"
+	type:"Dropout"
+	bottom:"relu4_g2_Nose"
+	top:"relu4_g2_Nose"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g2_Nose"
+  type: "InnerProduct"
+  bottom: "relu4_g2_Nose"
+  top: "FC2_g2_Nose" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g2_Nose"
+  type: "ReLU"
+  bottom: "FC2_g2_Nose"
+  top: "relu5_g2_Nose"
+}
+layer
+{
+	name:"drop2_g2"
+	type:"Dropout"
+	bottom:"relu5_g2_Nose"
+	top:"relu5_g2_Nose"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+ #group2 big nose
+layer {
+  name: "FC3_g2_BigNose"
+  type: "InnerProduct"
+  bottom: "relu5_g2_Nose"
+  top: "FC3_g2_BigNose" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_BigNose"
+  type: "Accuracy"
+  bottom: "FC3_g2_BigNose"
+  bottom: "label_attr8"
+  top: "accuracy_BigNose"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_BigNose"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g2_BigNose"
+  bottom: "label_attr8"
+  top: "loss_BigNose"
+  loss_weight:0.025
+}
+ #group2 pointy nose
+layer {
+  name: "FC3_g2_PointyNose"
+  type: "InnerProduct"
+  bottom: "relu5_g2_Nose"
+  top: "FC3_g2_PointyNose" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_PointyNose"
+  type: "Accuracy"
+  bottom: "FC3_g2_PointyNose"
+  bottom: "label_attr28"
+  top: "accuracy_PointyNose"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_PointyNose"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g2_PointyNose"
+  bottom: "label_attr28"
+  top: "loss_PointyNose"
+  loss_weight:0.025
+}
+
+#for group3
+layer {
+  name: "conv3_g3_Mouth"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g3_Mouth"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g3_Mouth"
+  type: "ReLU"
+  bottom: "conv3_g3_Mouth"
+  top: "conv3_g3_Mouth"
+}
+layer {
+  name: "pool3_g3_Mouth"
+  type: "Pooling"
+  bottom: "conv3_g3_Mouth"
+  top: "pool3_g3_Mouth"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5   
+    stride: 3	
+  }
+}
+layer
+{
+	name:"bn3_g3_Mouth"
+	type:"BatchNorm"
+	bottom:"pool3_g3_Mouth"
+	top:"bn3_g3_Mouth"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g3_Mouth"
+  type: "InnerProduct"
+  bottom: "bn3_g3_Mouth"
+  top: "FC1_g3_Mouth" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g3_Mouth"
+  type: "ReLU"
+  bottom: "FC1_g3_Mouth"
+  top: "relu4_g3_Mouth"
+}
+layer
+{
+	name:"drop1_g3"
+	type:"Dropout"
+	bottom:"relu4_g3_Mouth"
+	top:"relu4_g3_Mouth"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g3_Mouth"
+  type: "InnerProduct"
+  bottom: "relu4_g3_Mouth"
+  top: "FC2_g3_Mouth" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g3_Mouth"
+  type: "ReLU"
+  bottom: "FC2_g3_Mouth"
+  top: "relu5_g3_Mouth"
+}
+layer
+{
+	name:"drop2_g3"
+	type:"Dropout"
+	bottom:"relu5_g3_Mouth"
+	top:"relu5_g3_Mouth"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+ #group3 big lips
+layer {
+  name: "FC3_g3_BigLips"
+  type: "InnerProduct"
+  bottom: "relu5_g3_Mouth"
+  top: "FC3_g3_BigLips" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_BigLips"
+  type: "Accuracy"
+  bottom: "FC3_g3_BigLips"
+  bottom: "label_attr7"
+  top: "accuracy_BigLips"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_BigLips"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g3_BigLips"
+  bottom: "label_attr7"
+  top: "loss_BigLips"
+  loss_weight:0.025
+}
+
+
+ #group3 Smiling
+layer {
+  name: "FC3_g3_Smiling"
+  type: "InnerProduct"
+  bottom: "relu5_g3_Mouth"
+  top: "FC3_g3_Smiling" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Smiling"
+  type: "Accuracy"
+  bottom: "FC3_g3_Smiling"
+  bottom: "label_attr32"
+  top: "accuracy_Smiling"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Smiling"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g3_Smiling"
+  bottom: "label_attr32"
+  top: "loss_Smiling"
+  loss_weight:0.025
+}
+
+ #group3 Lipstick
+layer {
+  name: "FC3_g3_Lipstick"
+  type: "InnerProduct"
+  bottom: "relu5_g3_Mouth"
+  top: "FC3_g3_Lipstick" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Lipstick"
+  type: "Accuracy"
+  bottom: "FC3_g3_Lipstick"
+  bottom: "label_attr37"
+  top: "accuracy_Lipstick"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Lipstick"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g3_Lipstick"
+  bottom: "label_attr37"
+  top: "loss_Lipstick"
+  loss_weight:0.025
+}
+
+ #group3 Mouth_Slightly_Open
+layer {
+  name: "FC3_g3_Mouth_Slightly_Open"
+  type: "InnerProduct"
+  bottom: "relu5_g3_Mouth"
+  top: "FC3_g3_Mouth_Slightly_Open" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Mouth_Slightly_Open"
+  type: "Accuracy"
+  bottom: "FC3_g3_Mouth_Slightly_Open"
+  bottom: "label_attr22"
+  top: "accuracy_Mouth_Slightly_Open"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Mouth_Slightly_Open"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g3_Mouth_Slightly_Open"
+  bottom: "label_attr22"
+  top: "loss_Mouth_Slightly_Open"
+  loss_weight:0.025
+}
+
+#for group4
+layer {
+  name: "conv3_g4_Eyes"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g4_Eyes"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g4_Eyes"
+  type: "ReLU"
+  bottom: "conv3_g4_Eyes"
+  top: "conv3_g4_Eyes"
+}
+layer {
+  name: "pool3_g4_Eyes"
+  type: "Pooling"
+  bottom: "conv3_g4_Eyes"
+  top: "pool3_g4_Eyes"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5
+    stride: 3	    
+  }
+}
+layer
+{
+	name:"bn3_g4_Eyes"
+	type:"BatchNorm"
+	bottom:"pool3_g4_Eyes"
+	top:"bn3_g4_Eyes"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g4_Eyes"
+  type: "InnerProduct"
+  bottom: "bn3_g4_Eyes"
+  top: "FC1_g4_Eyes" 
+  param {    
+    lr_mult: 1
+	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g4_Eyes"
+  type: "ReLU"
+  bottom: "FC1_g4_Eyes"
+  top: "relu4_g4_Eyes"
+}
+layer
+{
+	name:"drop1_g4"
+	type:"Dropout"
+	bottom:"relu4_g4_Eyes"
+	top:"relu4_g4_Eyes"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g4_Eyes"
+  type: "InnerProduct"
+  bottom: "relu4_g4_Eyes"
+  top: "FC2_g4_Eyes" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g4_Eyes"
+  type: "ReLU"
+  bottom: "FC2_g4_Eyes"
+  top: "relu5_g4_Eyes"
+}
+layer
+{
+	name:"drop2_g4"
+	type:"Dropout"
+	bottom:"relu5_g4_Eyes"
+	top:"relu5_g4_Eyes"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+
+ #group4 Arched_Eyebrows
+layer {
+  name: "FC3_g4_Arched_Eyebrows"
+  type: "InnerProduct"
+  bottom: "relu5_g4_Eyes"
+  top: "FC3_g4_Arched_Eyebrows" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Arched_Eyebrows"
+  type: "Accuracy"
+  bottom: "FC3_g4_Arched_Eyebrows"
+  bottom: "label_attr2"
+  top: "accuracy_Arched_Eyebrows"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Arched_Eyebrows"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g4_Arched_Eyebrows"
+  bottom: "label_attr2"
+  top: "loss_Arched_Eyebrows"
+  loss_weight:0.025
+}
+
+ #group4 Bags_Under_Eyes
+layer {
+  name: "FC3_g4_Bags_Under_Eyes"
+  type: "InnerProduct"
+  bottom: "relu5_g4_Eyes"
+  top: "FC3_g4_Bags_Under_Eyes" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Bags_Under_Eyes"
+  type: "Accuracy"
+  bottom: "FC3_g4_Bags_Under_Eyes"
+  bottom: "label_attr4"
+  top: "accuracy_Bags_Under_Eyes"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Bags_Under_Eyes"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g4_Bags_Under_Eyes"
+  bottom: "label_attr4"
+  top: "loss_Bags_Under_Eyes"
+  loss_weight:0.025
+}
+
+#group4 Bushy_Eyebrows
+layer {
+  name: "FC3_g4_Bushy_Eyebrows"
+  type: "InnerProduct"
+  bottom: "relu5_g4_Eyes"
+  top: "FC3_g4_Bushy_Eyebrows" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Bushy_Eyebrows"
+  type: "Accuracy"
+  bottom: "FC3_g4_Bushy_Eyebrows"
+  bottom: "label_attr13"
+  top: "accuracy_Bushy_Eyebrows"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Bushy_Eyebrows"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g4_Bushy_Eyebrows"
+  bottom: "label_attr13"
+  top: "loss_Bushy_Eyebrows"
+  loss_weight:0.025
+}
+
+#group4 Narrow_Eyes
+layer {
+  name: "FC3_g4_Narrow_Eyes"
+  type: "InnerProduct"
+  bottom: "relu5_g4_Eyes"
+  top: "FC3_g4_Narrow_Eyes" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Narrow_Eyes"
+  type: "Accuracy"
+  bottom: "FC3_g4_Narrow_Eyes"
+  bottom: "label_attr24"
+  top: "accuracy_Narrow_Eyes"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Narrow_Eyes"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g4_Narrow_Eyes"
+  bottom: "label_attr24"
+  top: "loss_Narrow_Eyes"
+  loss_weight:0.025
+}
+
+#group4 Eyeglasses
+layer {
+  name: "FC3_g4_Eyeglasses"
+  type: "InnerProduct"
+  bottom: "relu5_g4_Eyes"
+  top: "FC3_g4_Eyeglasses" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Eyeglasses"
+  type: "Accuracy"
+  bottom: "FC3_g4_Eyeglasses"
+  bottom: "label_attr16"
+  top: "accuracy_Eyeglasses"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Eyeglasses"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g4_Eyeglasses"
+  bottom: "label_attr16"
+  top: "loss_Eyeglasses"
+  loss_weight:0.025
+}
+
+#for group5 
+layer {
+  name: "conv3_g5_Face"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g5_Face"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g5_Face"
+  type: "ReLU"
+  bottom: "conv3_g5_Face"
+  top: "conv3_g5_Face"
+}
+layer {
+  name: "pool3_g5_Face"
+  type: "Pooling"
+  bottom: "conv3_g5_Face"
+  top: "pool3_g5_Face"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5    
+	stride: 3	
+  }
+}
+layer
+{
+	name:"bn3_g5_Face"
+	type:"BatchNorm"
+	bottom:"pool3_g5_Face"
+	top:"bn3_g5_Face"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g5_Face"
+  type: "InnerProduct"
+  bottom: "bn3_g5_Face"
+  top: "FC1_g5_Face" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g5_Face"
+  type: "ReLU"
+  bottom: "FC1_g5_Face"
+  top: "relu4_g5_Face"
+}
+layer
+{
+	name:"drop1_g5"
+	type:"Dropout"
+	bottom:"relu4_g5_Face"
+	top:"relu4_g5_Face"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g5_Face"
+  type: "InnerProduct"
+  bottom: "relu4_g5_Face"
+  top: "FC2_g5_Face" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g5_Face"
+  type: "ReLU"
+  bottom: "FC2_g5_Face"
+  top: "relu5_g5_Face"
+}
+layer
+{
+	name:"drop2_g5"
+	type:"Dropout"
+	bottom:"relu5_g5_Face"
+	top:"relu5_g5_Face"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+
+ #group5 Attractive
+layer {
+  name: "FC3_g5_Attractive"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Attractive" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Attractive"
+  type: "Accuracy"
+  bottom: "FC3_g5_Attractive"
+  bottom: "label_attr3"
+  top: "accuracy_Attractive"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Attractive"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Attractive"
+  bottom: "label_attr3"
+  top: "loss_Attractive"
+  loss_weight:0.025
+}
+
+ #group5 Blurry
+layer {
+  name: "FC3_g5_Blurry"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Blurry" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Blurry"
+  type: "Accuracy"
+  bottom: "FC3_g5_Blurry"
+  bottom: "label_attr11"
+  top: "accuracy_Blurry"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Blurry"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Blurry"
+  bottom: "label_attr11"
+  top: "loss_Blurry"
+  loss_weight:0.025
+}
+
+ #group5 Oval_Face
+layer {
+  name: "FC3_g5_Oval_Face"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Oval_Face" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Oval_Face"
+  type: "Accuracy"
+  bottom: "FC3_g5_Oval_Face"
+  bottom: "label_attr26"
+  top: "accuracy_Oval_Face"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Oval_Face"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Oval_Face"
+  bottom: "label_attr26"
+  top: "loss_Oval_Face"
+  loss_weight:0.025
+}
+
+#group5 Pale_Skin
+layer {
+  name: "FC3_g5_Pale_Skin"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Pale_Skin" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Pale_Skin"
+  type: "Accuracy"
+  bottom: "FC3_g5_Pale_Skin"
+  bottom: "label_attr27"
+  top: "accuracy_Pale_Skin"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Pale_Skin"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Pale_Skin"
+  bottom: "label_attr27"
+  top: "loss_Pale_Skin"
+  loss_weight:0.025
+}
+
+#group5 Young
+layer {
+  name: "FC3_g5_Young"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Young" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Young"
+  type: "Accuracy"
+  bottom: "FC3_g5_Young"
+  bottom: "label_attr40"
+  top: "accuracy_Young"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Young"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Young"
+  bottom: "label_attr40"
+  top: "loss_Young"
+  loss_weight:0.025
+}
+
+#group5 Heavy_Makeup
+layer {
+  name: "FC3_g5_Heavy_Makeup"
+  type: "InnerProduct"
+  bottom: "relu5_g5_Face"
+  top: "FC3_g5_Heavy_Makeup" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Heavy_Makeup"
+  type: "Accuracy"
+  bottom: "FC3_g5_Heavy_Makeup"
+  bottom: "label_attr19"
+  top: "accuracy_Heavy_Makeup"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Heavy_Makeup"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g5_Heavy_Makeup"
+  bottom: "label_attr19"
+  top: "loss_Heavy_Makeup"
+  loss_weight:0.025
+}
+
+
+#for group6 
+layer {
+  name: "conv3_g6_Other"
+  type: "Convolution"
+  bottom: "bn2"
+  top: "conv3_g6_Other"
+  param {
+    lr_mult: 1
+	decay_mult: 0
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  convolution_param {
+    num_output: 300
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_g6_Other"
+  type: "ReLU"
+  bottom: "conv3_g6_Other"
+  top: "conv3_g6_Other"
+}
+layer {
+  name: "pool3_g6_Other"
+  type: "Pooling"
+  bottom: "conv3_g6_Other"
+  top: "pool3_g6_Other"
+  pooling_param {
+    pool: MAX
+    kernel_size: 5    
+	stride: 3	
+  }
+}
+layer
+{
+	name:"bn3_g6_Other"
+	type:"BatchNorm"
+	bottom:"pool3_g6_Other"
+	top:"bn3_g6_Other"
+	batch_norm_param:{
+		use_global_stats:false
+	}	
+}
+layer {
+  name: "FC1_g6_Other"
+  type: "InnerProduct"
+  bottom: "bn3_g6_Other"
+  top: "FC1_g6_Other" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4_g6_Other"
+  type: "ReLU"
+  bottom: "FC1_g6_Other"
+  top: "relu4_g6_Other"
+}
+layer
+{
+	name:"drop1_g6"
+	type:"Dropout"
+	bottom:"relu4_g6_Other"
+	top:"relu4_g6_Other"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+layer {
+  name: "FC2_g6_Other"
+  type: "InnerProduct"
+  bottom: "relu4_g6_Other"
+  top: "FC2_g6_Other" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 512
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5_g6_Other"
+  type: "ReLU"
+  bottom: "FC2_g6_Other"
+  top: "relu5_g6_Other"
+}
+layer
+{
+	name:"drop2_g5"
+	type:"Dropout"
+	bottom:"relu5_g6_Other"
+	top:"relu5_g6_Other"
+	dropout_param
+	{
+		dropout_ratio:0.5
+	}
+}
+
+ #group6 Black_Hair
+layer {
+  name: "FC3_g6_Black_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Black_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Black_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Black_Hair"
+  bottom: "label_attr9"
+  top: "accuracy_Black_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Black_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Black_Hair"
+  bottom: "label_attr9"
+  top: "loss_Black_Hair"
+  loss_weight:0.025
+}
+
+ #group6 Blond_Hair
+layer {
+  name: "FC3_g6_Blond_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Blond_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Blond_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Blond_Hair"
+  bottom: "label_attr10"
+  top: "accuracy_Blond_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Blond_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Blond_Hair"
+  bottom: "label_attr10"
+  top: "loss_Blond_Hair"
+  loss_weight:0.025
+}
+#group6 Brown_Hair
+layer {
+  name: "FC3_g6_Brown_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Brown_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Brown_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Brown_Hair"
+  bottom: "label_attr12"
+  top: "accuracy_Brown_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Brown_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Brown_Hair"
+  bottom: "label_attr12"
+  top: "loss_Brown_Hair"
+  loss_weight:0.025
+}
+
+#group6 Gray_Hair
+layer {
+  name: "FC3_g6_Gray_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Gray_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Gray_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Gray_Hair"
+  bottom: "label_attr18"
+  top: "accuracy_Gray_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Gray_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Gray_Hair"
+  bottom: "label_attr18"
+  top: "loss_Gray_Hair"
+  loss_weight:0.025
+}
+#group6 Wearing_Earrings
+layer {
+  name: "FC3_g6_Wearing_Earrings"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Wearing_Earrings" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Wearing_Earrings"
+  type: "Accuracy"
+  bottom: "FC3_g6_Wearing_Earrings"
+  bottom: "label_attr35"
+  top: "accuracy_Wearing_Earrings"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Wearing_Earrings"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Wearing_Earrings"
+  bottom: "label_attr35"
+  top: "loss_Wearing_Earrings"
+  loss_weight:0.025
+}
+
+#group6 Wearing_Necklace
+layer {
+  name: "FC3_g6_Wearing_Necklace"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Wearing_Necklace" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Wearing_Necklace"
+  type: "Accuracy"
+  bottom: "FC3_g6_Wearing_Necklace"
+  bottom: "label_attr38"
+  top: "accuracy_Wearing_Necklace"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Wearing_Necklace"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Wearing_Necklace"
+  bottom: "label_attr38"
+  top: "loss_Wearing_Necklace"
+  loss_weight:0.025
+}
+
+#group6 Wearing_Necktie
+layer {
+  name: "FC3_g6_Wearing_Necktie"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Wearing_Necktie" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Wearing_Necktie"
+  type: "Accuracy"
+  bottom: "FC3_g6_Wearing_Necktie"
+  bottom: "label_attr39"
+  top: "accuracy_Wearing_Necktie"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Wearing_Necktie"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Wearing_Necktie"
+  bottom: "label_attr39"
+  top: "loss_Wearing_Necktie"
+  loss_weight:0.025
+}
+
+#group6 Bald
+layer {
+  name: "FC3_g6_Bald"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Bald" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Bald"
+  type: "Accuracy"
+  bottom: "FC3_g6_Bald"
+  bottom: "label_attr5"
+  top: "accuracy_Bald"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Bald"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Bald"
+  bottom: "label_attr5"
+  top: "loss_Bald"
+  loss_weight:0.025
+}
+
+#group6 Receding_Hairline
+layer {
+  name: "FC3_g6_Receding_Hairline"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Receding_Hairline" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Receding_Hairline"
+  type: "Accuracy"
+  bottom: "FC3_g6_Receding_Hairline"
+  bottom: "label_attr29"
+  top: "accuracy_Receding_Hairline"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Receding_Hairline"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Receding_Hairline"
+  bottom: "label_attr29"
+  top: "loss_Receding_Hairline"
+  loss_weight:0.025
+}
+
+#group6 Bangs
+layer {
+  name: "FC3_g6_Bangs"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Bangs" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Bangs"
+  type: "Accuracy"
+  bottom: "FC3_g6_Bangs"
+  bottom: "label_attr6"
+  top: "accuracy_Bangs"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Bangs"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Bangs"
+  bottom: "label_attr6"
+  top: "loss_Bangs"
+  loss_weight:0.025
+}
+
+#group6 Wearing_Hat
+layer {
+  name: "FC3_g6_Wearing_Hat"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Wearing_Hat" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Wearing_Hat"
+  type: "Accuracy"
+  bottom: "FC3_g6_Wearing_Hat"
+  bottom: "label_attr36"
+  top: "accuracy_Wearing_Hat"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Wearing_Hat"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Wearing_Hat"
+  bottom: "label_attr36"
+  top: "loss_Wearing_Hat"
+  loss_weight:0.025
+}
+
+#group6 Straight_Hair
+layer {
+  name: "FC3_g6_Straight_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Straight_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Straight_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Straight_Hair"
+  bottom: "label_attr33"
+  top: "accuracy_Straight_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Straight_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Straight_Hair"
+  bottom: "label_attr33"
+  top: "loss_Straight_Hair"
+  loss_weight:0.025
+}
+
+#group6 Wavy_Hair
+layer {
+  name: "FC3_g6_Wavy_Hair"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Wavy_Hair" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Wavy_Hair"
+  type: "Accuracy"
+  bottom: "FC3_g6_Wavy_Hair"
+  bottom: "label_attr34"
+  top: "accuracy_Wavy_Hair"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Wavy_Hair"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Wavy_Hair"
+  bottom: "label_attr34"
+  top: "loss_Wavy_Hair"
+  loss_weight:0.025
+}
+
+#group6 5_o_Clock_Shadow
+layer {
+  name: "FC3_g6_5_o_Clock_Shadow"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_5_o_Clock_Shadow" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_5_o_Clock_Shadow"
+  type: "Accuracy"
+  bottom: "FC3_g6_5_o_Clock_Shadow"
+  bottom: "label_attr1"
+  top: "accuracy_5_o_Clock_Shadow"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_5_o_Clock_Shadow"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_5_o_Clock_Shadow"
+  bottom: "label_attr1"
+  top: "loss_5_o_Clock_Shadow"
+  loss_weight:0.025
+}
+
+#group6 Mustache
+layer {
+  name: "FC3_g6_Mustache"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Mustache" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Mustache"
+  type: "Accuracy"
+  bottom: "FC3_g6_Mustache"
+  bottom: "label_attr23"
+  top: "accuracy_Mustache"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Mustache"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Mustache"
+  bottom: "label_attr23"
+  top: "loss_Mustache"
+  loss_weight:0.025
+}
+
+#group6 No_Beard
+layer {
+  name: "FC3_g6_No_Beard"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_No_Beard" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_No_Beard"
+  type: "Accuracy"
+  bottom: "FC3_g6_No_Beard"
+  bottom: "label_attr25"
+  top: "accuracy_No_Beard"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_No_Beard"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_No_Beard"
+  bottom: "label_attr25"
+  top: "loss_No_Beard"
+  loss_weight:0.025
+}
+
+#group6 Sideburns
+layer {
+  name: "FC3_g6_Sideburns"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Sideburns" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Sideburns"
+  type: "Accuracy"
+  bottom: "FC3_g6_Sideburns"
+  bottom: "label_attr31"
+  top: "accuracy_Sideburns"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Sideburns"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Sideburns"
+  bottom: "label_attr31"
+  top: "loss_Sideburns"
+  loss_weight:0.025
+}
+
+#group6 Goatee
+layer {
+  name: "FC3_g6_Goatee"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Goatee" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Goatee"
+  type: "Accuracy"
+  bottom: "FC3_g6_Goatee"
+  bottom: "label_attr17"
+  top: "accuracy_Goatee"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Goatee"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Goatee"
+  bottom: "label_attr17"
+  top: "loss_Goatee"
+  loss_weight:0.025
+}
+
+
+#group6 High_Cheekbones
+layer {
+  name: "FC3_g6_High_Cheekbones"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_High_Cheekbones" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_High_Cheekbones"
+  type: "Accuracy"
+  bottom: "FC3_g6_High_Cheekbones"
+  bottom: "label_attr20"
+  top: "accuracy_High_Cheekbones"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_High_Cheekbones"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_High_Cheekbones"
+  bottom: "label_attr20"
+  top: "loss_High_Cheekbones"
+  loss_weight:0.025
+}
+
+#group6 Rosy_Cheeks
+layer {
+  name: "FC3_g6_Rosy_Cheeks"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Rosy_Cheeks" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Rosy_Cheeks"
+  type: "Accuracy"
+  bottom: "FC3_g6_Rosy_Cheeks"
+  bottom: "label_attr30"
+  top: "accuracy_Rosy_Cheeks"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Rosy_Cheeks"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Rosy_Cheeks"
+  bottom: "label_attr30"
+  top: "loss_Rosy_Cheeks"
+  loss_weight:0.025
+}
+
+#group6 Chubby
+layer {
+  name: "FC3_g6_Chubby"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Chubby" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Chubby"
+  type: "Accuracy"
+  bottom: "FC3_g6_Chubby"
+  bottom: "label_attr14"
+  top: "accuracy_Chubby"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Chubby"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Chubby"
+  bottom: "label_attr14"
+  top: "loss_Chubby"
+  loss_weight:0.025
+}
+
+#group6 Double_Chin
+layer {
+  name: "FC3_g6_Double_Chin"
+  type: "InnerProduct"
+  bottom: "relu5_g6_Other"
+  top: "FC3_g6_Double_Chin" 
+  param {    
+    lr_mult: 1	
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {    
+    num_output: 2
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "accuracy_Double_Chin"
+  type: "Accuracy"
+  bottom: "FC3_g6_Double_Chin"
+  bottom: "label_attr15"
+  top: "accuracy_Double_Chin"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_Double_Chin"
+  type: "SoftmaxWithLoss"
+  bottom: "FC3_g6_Double_Chin"
+  bottom: "label_attr15"
+  top: "loss_Double_Chin"
+  loss_weight:0.025
+}
