@@ -36,14 +36,14 @@ layer {
   type: "Data"
   top: "data"
   transform_param {
-    mean_file: "D:/djk_data/mean.binaryproto"
+    mean_file: "root/mean.binaryproto"
     crop_size: 227   
   }
   include {
     phase: TEST
   }
   data_param {
-    source: "D:/djk_data/TestDbImage"
+    source: "root/TestDbImage"
     batch_size: 100
     backend: LEVELDB
   }
@@ -57,7 +57,7 @@ layer {
     phase: TEST
   }
   data_param {
-    source: "D:/djk_data/TestDbLabel"
+    source: "root/TestDbLabel"
     batch_size: 100
     backend: LEVELDB
   }
